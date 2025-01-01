@@ -8,18 +8,18 @@ int what_to_do(){
     return action;
 }
 
-void add_a_pwd(char *pwdtable, int *number_of_passwords) {
+void add_a_pwd(char pwdtable[10][10], int *number_of_passwords) {
     char new_password[20], login[50];
     printf("Enter your login:");
     scanf("%s",login);
     printf("Please enter your password:\n");
     scanf("%s",new_password);
-    *((pwdtable) + *number_of_passwords) = login;
-    *((pwdtable + 1) + *number_of_passwords) = new_password;
+    pwdtable[0][*number_of_passwords - 1] = login;
+    pwdtable[1][*number_of_passwords - 1] = new_password;
     *number_of_passwords++;
 }
 
-void edit_a_pwd(char *pwdtable, int *number_of_passwords) {
+void edit_a_pwd(char pwdtable[10][10], int *number_of_passwords) {
     int position = 0;
     char login[50];
     char new_password[20];
@@ -30,10 +30,10 @@ void edit_a_pwd(char *pwdtable, int *number_of_passwords) {
     while (strcmp(*(pwdtable + position), login) != 0 && position < *number_of_passwords) {
         position++;
     }
-    *((pwdtable) + position) = new_password;
+    pwdtable[1][position] = new_password;
 }
 
-void delete_a_pwd(char *pwdtable, int *number_of_passwords) {
+void delete_a_pwd(char pwdtable[10][10], int *number_of_passwords) {
     int position = 0;
     char login[50];
     printf("enter the login for the information you want to delete:\n");
@@ -41,26 +41,26 @@ void delete_a_pwd(char *pwdtable, int *number_of_passwords) {
     while (strcmp(*(pwdtable + position), login) != 0 && position < *number_of_passwords) {
         position++;
     }
-    *((pwdtable) + position) = "";//to empty the cell of the login in the table
-    *((pwdtable + 1) + position) = "";//to empty the cell of the pwd in the
+    pwdtable[0][position] = "";//to empty the cell of the login in the table
+    pwdtable[1][position] = "";//to empty the cell of the pwd in the
 
     //to replace the empty space in the table
     while (position < *number_of_passwords) {
-        *((pwdtable) + position) = *((pwdtable) + (position + 1));
-        *((pwdtable + 1) + position) = *((pwdtable + 1) + (position + 1));
+        pwdtable[0][position] = pwdtable[0][position + 1];
+        pwdtable[1][position] = pwdtable[1][position + 1];
         position++;
     }
     *number_of_passwords--;
 }
 
-void view_all(char *pwdtable, int *number_of_passwords) {
+void view_all(char pwdtable[10][10], int *number_of_passwords) {
     for (int i = 0; i < *number_of_passwords; i++) {
-        printf("%s :\n",*((pwdtable) + i));
-        printf("%s :\n",*((pwdtable + 1) + i));
+        printf("%s :\n",pwdtable[0][i]);
+        printf("%s :\n",pwdtable[1][i]);
     }
 }
 
-void search_a_pwd(char *pwdtable, int *number_of_passwords) {
+void search_a_pwd(char pwdtable[10][10], int *number_of_passwords) {
     int position = 0;
     char login[50];
     printf("enter the login for the information you want to delete:\n");
@@ -68,14 +68,13 @@ void search_a_pwd(char *pwdtable, int *number_of_passwords) {
     while (strcmp(*(pwdtable + position), login) != 0 && position < *number_of_passwords) {
         position++;
     }
-    printf("%s :\n",*((pwdtable) + position));
-    printf("%s :\n",*((pwdtable + 1) + position));
+    printf("%s :\n",pwdtable[0][position]);
+    printf("%s :\n",pwdtable[1][position]);
 }
 
 int main(void) {
-    char login_and_pwd[10][10] = {{"youssef","XD4ever"},
-                                    {"hello", "yessir"}};
-    int number_of_passwords = strlen(login_and_pwd);
+    char login_and_pwd[10][10];
+    int number_of_passwords = 0;
     switch (what_to_do()) {
         //to add a new password
         case 1:add_a_pwd(login_and_pwd, &number_of_passwords);break;
