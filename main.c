@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
 int what_to_do(){
     int action;
@@ -71,6 +72,16 @@ void search_a_pwd(char pwdtable[10][10], int *number_of_passwords) {
     printf("%s :\n",pwdtable[0][position]);
     printf("%s :\n",pwdtable[1][position]);
 }
+void pwdGeneration(){
+    char pwd[20];
+    int length;
+    printf("Enter the length of the password you want to generate:");
+    scanf("%d",&length);
+    for (int i = 0; i < length; i++) {
+        pwd[i] = (rand() % 94) + 33;
+    }
+    printf("The generated password is: %s",pwd);
+}
 
 int main(void) {
     char login_and_pwd[10][10];
@@ -86,6 +97,8 @@ int main(void) {
         case 4:view_all(login_and_pwd, &number_of_passwords);break;
         //to find a specific pwd
         case 5:search_a_pwd(login_and_pwd, &number_of_passwords);break;
+        //To generate a password
+        case 6:pwdGeneration();break;
         default:printf("Wrong input");break;
     }
     return 0;
